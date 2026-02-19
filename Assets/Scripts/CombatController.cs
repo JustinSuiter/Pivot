@@ -8,6 +8,7 @@ public class CombatController : MonoBehaviour
     public Transform weaponPivot_Front;
     public Transform weaponPivot_Back;
     public Animator frontWeaponAnimator;
+    private HitFeedback _hitFeedback;
 
     [Header("Combat Stats")]
     public float damage = 25f;
@@ -23,6 +24,10 @@ public class CombatController : MonoBehaviour
     private float _swingTimer;
     private bool _isSinging;
 
+    void Start()
+    {
+        _hitFeedback = HitFeedback.Instance;
+    }
     void Update()
     {
         _swingTimer -= Time.deltaTime;
@@ -36,6 +41,8 @@ public class CombatController : MonoBehaviour
     IEnumerator PerformSwing()
     {
         _isSinging = true;
+        _hitFeedback?.OnSwing();
+
         _swingTimer = swingCooldown;
 
         Transform activePivot = dualController.isFacingFront
@@ -78,6 +85,8 @@ public class CombatController : MonoBehaviour
             if (enemy != null)
             {
                 enemy.TakeDamage(damage);
+                _hitFeedback?.OnHit();
+                _hitFeedback?.SetActiveCamera(dualController.GetActiveCamera().transform);
             }
         }
     }
