@@ -16,7 +16,7 @@ public class GameManager : MonoBehaviour
     public void AddScore(int amount)
     {
         score += amount;
-        Debug.Log("Score: " + score);
+        HUDManager.Instance?.UpdateScore(score);
     }
 
     public void TakeDamage(float amount)
@@ -42,5 +42,6 @@ public class GameManager : MonoBehaviour
     public void OnWaveCleared(int waveNumber)
     {
         Debug.Log("Wave " + waveNumber + " cleared! Score: " + score);
+        HUDManager.Instance?.UpdateWave(waveNumber + 1);
     }
 }

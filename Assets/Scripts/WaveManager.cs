@@ -75,7 +75,6 @@ public class WaveManager : MonoBehaviour
         GameObject enemy = Instantiate(prefab, spawnPoint.position, Quaternion.identity);
 
         enemiesAlive++;
-        _activeEnemies.Add(enemy);
     }
 
     public void HandleEnemyDeath()
