@@ -101,6 +101,7 @@ public class EnemyBase : MonoBehaviour
     {
         _isDead = true;
         if (_agent != null) _agent.enabled = false;
+        WaveManager.Instance?.HandleEnemyDeath();
         GameManager.Instance?.AddScore(100);
         Destroy(gameObject, 0.1f);
     }

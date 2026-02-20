@@ -60,8 +60,11 @@ public class CombatController : MonoBehaviour
             yield return null;
         }
 
-        CheckHit(activePivot);
+        float damageMultiplier = StaminaSystem.Instance != null
+            ? StaminaSystem.Instance.UseSwingStamina()
+            : 1f;
 
+        CheckHit(activePivot, damageMultiplier);
         elapsed = 0f;
         while (elapsed < swingDuration)
         {
@@ -74,7 +77,7 @@ public class CombatController : MonoBehaviour
         _isSinging = false;
     }
 
-    void CheckHit(Transform pivot)
+    void CheckHit(Transform pivot, float damageMultiplier = 1f)
     {
         Vector3 hitOrigin = pivot.position + pivot.forward * hitRange;
         Collider[] hits = Physics.OverlapSphere(hitOrigin, hitRadius, enemyLayer);
@@ -84,9 +87,9 @@ public class CombatController : MonoBehaviour
             EnemyBase enemy = hit.GetComponent<EnemyBase>();
             if (enemy != null)
             {
-                enemy.TakeDamage(damage);
-                _hitFeedback?.OnHit();
-                _hitFeedback?.SetActiveCamera(dualController.GetActiveCamera().transform);
+                enemy.TakeDamage(damage * damageMultiplier);
+                HitFeedback.Instance?.SetActiveCamera(dualController.GetActiveCamera().transform);
+                HitFeedback.Instance?.OnHit();
             }
         }
     }

@@ -21,9 +21,26 @@ public class GameManager : MonoBehaviour
 
     public void TakeDamage(float amount)
     {
-        playerHP -= amount;
+
+        float actualDamage = ShieldController.Instance != null
+            ? ShieldController.Instance.ProcessIncomingDamage(amount)
+            : amount;
+
+        playerHP -= actualDamage;
+        playerHP = Mathf.Max(0f, playerHP);
         Debug.Log("Player HP: " + playerHP);
+
         if (playerHP <= 0f)
             Debug.Log("GAME OVER");
+    }
+
+    public void OnWaveStart(int waveNumber)
+    {
+        Debug.Log("Wave " + waveNumber + " started");
+    }
+
+    public void OnWaveCleared(int waveNumber)
+    {
+        Debug.Log("Wave " + waveNumber + " cleared! Score: " + score);
     }
 }
