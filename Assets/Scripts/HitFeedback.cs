@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 
 public class HitFeedback : MonoBehaviour
@@ -15,6 +16,9 @@ public class HitFeedback : MonoBehaviour
     [Header("Audio")]
     public AudioClip hitSound;
     public AudioClip swingSound;
+
+    [Header("Visuals")]
+    public Image syncBurstFlash;
 
     private AudioSource _audioSource;
     private Vector3 _cameraOriginalPos;
@@ -80,22 +84,44 @@ public class HitFeedback : MonoBehaviour
 
     IEnumerator BurstEffect()
     {
+        // Flash screen cyan
+        if (syncBurstFlash != null)
+            syncBurstFlash.color = new Color(0.27f, 1f, 0.67f, 0.6f);
+
+        // Big freeze frame
         Time.timeScale = 0f;
         yield return new WaitForSecondsRealtime(0.08f);
         Time.timeScale = 1f;
 
+        // Fade flash out
+        float elapsed = 0f;
+        while (elapsed < 0.3f)
+        {
+            elapsed += Time.unscaledDeltaTime;
+            if (syncBurstFlash != null)
+            {
+                float alpha = Mathf.Lerp(0.6f, 0f, elapsed / 0.3f);
+                syncBurstFlash.color = new Color(0.27f, 1f, 0.67f, alpha);
+            }
+            yield return null;
+        }
+
+        if (syncBurstFlash != null)
+            syncBurstFlash.color = Color.clear;
+
+        // Screen shake
         if (_activeCameraTransform != null)
         {
-            float elapsed = 0f;
+            float shakeElapsed = 0f;
             float duration = 0.3f;
             float magnitude = 0.15f;
 
-            while (elapsed < duration)
+            while (shakeElapsed < duration)
             {
                 float x = Random.Range(-1f, 1f) * magnitude;
                 float y = Random.Range(-1f, 1f) * magnitude;
                 _activeCameraTransform.localPosition = _cameraOriginalPos + new Vector3(x, y, 0f);
-                elapsed += Time.unscaledDeltaTime;
+                shakeElapsed += Time.unscaledDeltaTime;
                 magnitude *= 0.95f;
                 yield return null;
             }

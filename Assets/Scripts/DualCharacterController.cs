@@ -17,6 +17,13 @@ public class DualCharacterController : MonoBehaviour
     public Camera frontCamera;
     public Camera backCamera;
 
+    [Header("Flip Feedback")]
+    public float flipFOVPunch = 95f;
+    public float normalFOV = 80f;
+    public float fovReturnSpeed = 8f;
+    private float _currentFOV;
+    private bool _isReturningFOV = false;
+
     [Header("State")]
     public bool isFacingFront = true;
 
@@ -34,6 +41,7 @@ public class DualCharacterController : MonoBehaviour
         isFacingFront = true;
         frontCamera.enabled = true;
         backCamera.enabled = false;
+        _currentFOV = normalFOV;
     }
 
     void Update()
@@ -41,6 +49,7 @@ public class DualCharacterController : MonoBehaviour
         HandleMovement();
         HandleLook();
         HandleFlip();
+        HandleFOVReturn();
     }
 
     void HandleMovement()
@@ -86,7 +95,40 @@ public class DualCharacterController : MonoBehaviour
             backCamera.enabled = !isFacingFront;
             _flipTimer = flipCooldown;
         }
+
+        if (Input.GetKeyDown(KeyCode.Space) && _flipTimer <= 0f)
+        {
+            isFacingFront = !isFacingFront;
+            frontCamera.enabled = isFacingFront;
+            backCamera.enabled = !isFacingFront;
+            _flipTimer = flipCooldown;
+            TriggerFlipFeedback();
+        }
     }
 
     public Camera GetActiveCamera() => isFacingFront ? frontCamera : backCamera;
+
+    void HandleFOVReturn()
+    {
+        if (!_isReturningFOV) return;
+
+        _currentFOV = Mathf.Lerp(_currentFOV, normalFOV, Time.deltaTime * fovReturnSpeed);
+        frontCamera.fieldOfView = _currentFOV;
+        backCamera.fieldOfView = _currentFOV;
+
+        if (Mathf.Abs(_currentFOV - normalFOV) < 0.1f)
+        {
+            _currentFOV = normalFOV;
+            _isReturningFOV = false;
+        }
+    }
+
+    void TriggerFlipFeedback()
+    {
+        _currentFOV = flipFOVPunch;
+        frontCamera.fieldOfView = _currentFOV;
+        backCamera.fieldOfView = _currentFOV;
+        _isReturningFOV = true;
+    }
+
 }

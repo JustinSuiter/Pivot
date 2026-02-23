@@ -104,6 +104,9 @@ public class EnemyBase : MonoBehaviour
         WaveManager.Instance?.HandleEnemyDeath();
         GameManager.Instance?.AddScore(100);
         SyncMeter.Instance?.AddSyncOnKill();
+        GameObject deathFX = Resources.Load<GameObject>("FX_EnemyDeath");
+        if (deathFX != null)
+            Instantiate(deathFX, transform.position + Vector3.up, Quaternion.identity);
         Destroy(gameObject, 0.1f);
     }
 

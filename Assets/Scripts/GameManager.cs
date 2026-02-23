@@ -54,6 +54,8 @@ public class GameManager : MonoBehaviour
             : amount;
 
         playerHP -= actualDamage;
+        if (actualDamage >= 10f)
+            DamageVignette.Instance?.Flash();
         playerHP = Mathf.Max(0f, playerHP);
         HUDManager.Instance?.UpdateHP(playerHP, maxHP);
 
@@ -98,6 +100,7 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 0f;
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
+        DamageVignette.Instance?.FlashBig();
     }
 
     public void RestartGame()

@@ -35,6 +35,13 @@ public class HUDManager : MonoBehaviour
     {
         UpdateBars();
         UpdateSideIndicator();
+        if (StaminaSystem.Instance != null && StaminaSystem.Instance.IsExhausted())
+            {
+                float pulse = (Mathf.Sin(Time.time * 8f) + 1f) / 2f;
+                ColorBlock cb = staminaBar.colors;
+                staminaBar.GetComponentInChildren<Image>().color =
+                    Color.Lerp(new Color(1f, 0.4f, 0f), Color.red, pulse);
+            }
     }
 
     void UpdateBars()
