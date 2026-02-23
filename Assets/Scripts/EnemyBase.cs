@@ -39,9 +39,9 @@ public class EnemyBase : MonoBehaviour
     protected virtual void Update()
     {
         if (_isDead || player == null) return;
+        if (GameManager.Instance != null && GameManager.Instance.isGameOver) return;
 
         _attackTimer -= Time.deltaTime;
-
         Pursue();
         TryAttack();
     }
@@ -103,6 +103,9 @@ public class EnemyBase : MonoBehaviour
         if (_agent != null) _agent.enabled = false;
         WaveManager.Instance?.HandleEnemyDeath();
         GameManager.Instance?.AddScore(100);
+        SyncMeter.Instance?.AddSyncOnKill();
         Destroy(gameObject, 0.1f);
     }
+
+    
 }

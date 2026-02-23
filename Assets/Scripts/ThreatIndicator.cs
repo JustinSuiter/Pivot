@@ -60,34 +60,46 @@ public class ThreatIndicator : MonoBehaviour
         Camera activeCam = dualController.GetActiveCamera();
         Vector3 screenPos = activeCam.WorldToViewportPoint(enemyWorldPos);
 
-        if (screenPos.z < 0f)
-        {
-            screenPos.x = 1f - screenPos.x;
-            screenPos.y = 1f - screenPos.y;
-            screenPos.z = 0f;
-        }
-
         float screenW = Screen.width;
         float screenH = Screen.height;
 
-        Vector2 canvasPos = new Vector2(
-            (screenPos.x - 0.5f) * screenW,
-            (screenPos.y - 0.5f) * screenH
-        );
+        Vector2 canvasPos;
 
-        float halfW = (screenW / 2f) - edgePadding;
-        float halfH = (screenH / 2f) - edgePadding;
+        if (screenPos.z < 0f)
+        {
+            // Enemy is behind camera — use the horizontal angle only
+            // Project onto the horizontal plane to get left/right direction
+            Vector3 toEnemy = enemyWorldPos - activeCam.transform.position;
+            float rightDot = Vector3.Dot(toEnemy, activeCam.transform.right);
 
-        if (Mathf.Abs(canvasPos.x) <= halfW && Mathf.Abs(canvasPos.y) <= halfH)
-            return;
+            // Place arrow at bottom edge, shifted left or right based on angle
+            float halfW = (screenW / 2f) - edgePadding;
+            float halfH = (screenH / 2f) - edgePadding;
+            float xPos = Mathf.Clamp(rightDot * 80f, -halfW, halfW);
+            canvasPos = new Vector2(xPos, -halfH);
+        }
+        else
+        {
+            canvasPos = new Vector2(
+                (screenPos.x - 0.5f) * screenW,
+                (screenPos.y - 0.5f) * screenH
+            );
 
-        float scale = Mathf.Min(halfW / Mathf.Abs(canvasPos.x),
-                                halfH / Mathf.Abs(canvasPos.y));
-        Vector2 clampedPos = canvasPos * scale;
+            float halfW = (screenW / 2f) - edgePadding;
+            float halfH = (screenH / 2f) - edgePadding;
+
+            // Enemy is on screen — no arrow needed
+            if (Mathf.Abs(canvasPos.x) <= halfW && Mathf.Abs(canvasPos.y) <= halfH)
+                return;
+
+            float scale = Mathf.Min(halfW / Mathf.Abs(canvasPos.x),
+                                    halfH / Mathf.Abs(canvasPos.y));
+            canvasPos *= scale;
+        }
 
         GameObject arrow = GetArrow();
         RectTransform rt = arrow.GetComponent<RectTransform>();
-        rt.anchoredPosition = clampedPos;
+        rt.anchoredPosition = canvasPos;
 
         float angle = Mathf.Atan2(canvasPos.y, canvasPos.x) * Mathf.Rad2Deg;
         rt.rotation = Quaternion.Euler(0f, 0f, angle - 90f);

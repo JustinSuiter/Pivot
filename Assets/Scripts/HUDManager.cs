@@ -23,6 +23,9 @@ public class HUDManager : MonoBehaviour
     [Header("References")]
     public DualCharacterController dualController;
 
+    [Header("Sync")]
+    public GameObject syncReadyText;
+
     void Awake()
     {
         Instance = this;
@@ -36,12 +39,6 @@ public class HUDManager : MonoBehaviour
 
     void UpdateBars()
     {
-        if (GameManager.Instance != null)
-        {
-            hpBar.value = GameManager.Instance.playerHP;
-            hpBar.maxValue = GameManager.Instance.maxHP;
-        }
-
         if (StaminaSystem.Instance != null)
         {
             staminaBar.value = StaminaSystem.Instance.currentStamina;
@@ -73,5 +70,20 @@ public class HUDManager : MonoBehaviour
     {
         if (waveText != null)
             waveText.text = "WAVE " + wave;
+    }
+
+    public void UpdateSyncReady(bool ready)
+    {
+        if (syncReadyText != null)
+            syncReadyText.SetActive(ready);
+    }
+
+    public void UpdateHP(float current, float max)
+    {
+        if (hpBar != null)
+        {
+            hpBar.value = current;
+            hpBar.maxValue = max;
+        }
     }
 }

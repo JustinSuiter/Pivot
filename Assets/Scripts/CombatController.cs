@@ -88,6 +88,7 @@ public class CombatController : MonoBehaviour
             if (enemy != null)
             {
                 enemy.TakeDamage(damage * damageMultiplier);
+                SyncMeter.Instance?.ArmFromHit();
                 HitFeedback.Instance?.SetActiveCamera(dualController.GetActiveCamera().transform);
                 HitFeedback.Instance?.OnHit();
             }

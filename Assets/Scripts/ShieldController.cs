@@ -80,7 +80,7 @@ public class ShieldController : MonoBehaviour
 
         if (_inParryWindow)
         {
-            SyncMeter.Instance?.AddSync(parrysynsReward);
+            SyncMeter.Instance?.ArmFromBlock(isPerfectParry: _inParryWindow);
             HitFeedback.Instance?.OnHit();
             Debug.Log("Perfect Parry!");
             return 0f;

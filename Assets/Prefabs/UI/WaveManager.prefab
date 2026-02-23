@@ -1,0 +1,58 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &473261308829908442
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1858264499161532151}
+  - component: {fileID: 7477694275401136796}
+  m_Layer: 0
+  m_Name: WaveManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1858264499161532151
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 473261308829908442}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -1.2877, y: -0, z: 5.7613}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7477694275401136796
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 473261308829908442}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d2651c98fefc09c4dad40eb91e6bb531, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WaveManager
+  waves:
+  - {fileID: 11400000, guid: a8169dfaf3f24ca419517661a780d1d9, type: 2}
+  - {fileID: 11400000, guid: b933f615adff8cd41a31da481e81817b, type: 2}
+  - {fileID: 11400000, guid: 9985ef2f8332882499c3a3645bf2c9d0, type: 2}
+  - {fileID: 11400000, guid: 462bc5bb32d2108409330ac9c3e4e733, type: 2}
+  - {fileID: 11400000, guid: 6fe5247a00ccf2143a331aaa16b755a3, type: 2}
+  - {fileID: 11400000, guid: ce4edee75569f0842af09b1f2c867319, type: 2}
+  escalationWave: {fileID: 11400000, guid: ce4edee75569f0842af09b1f2c867319, type: 2}
+  spawnPointParent: {fileID: 0}
+  currentWaveIndex: 0
+  enemiesAlive: 0
+  waveInProgress: 0

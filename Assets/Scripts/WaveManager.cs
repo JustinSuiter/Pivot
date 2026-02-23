@@ -60,11 +60,11 @@ public class WaveManager : MonoBehaviour
 
         yield return new WaitUntil(() => enemiesAlive <= 0);
 
-        Debug.Log("Wave " + (currentWaveIndex + 1) + " cleared!");
+        int scoreGained = 500;
         GameManager.Instance?.OnWaveCleared(currentWaveIndex + 1);
-
         currentWaveIndex++;
-        StartCoroutine(StartNextWave());
+
+        WaveClearManager.Instance?.ShowWaveClear(currentWaveIndex, scoreGained);
     }
 
     void SpawnEnemy(GameObject prefab)
@@ -80,5 +80,10 @@ public class WaveManager : MonoBehaviour
     public void HandleEnemyDeath()
     {
         enemiesAlive--;
+    }
+
+    public void StartNextWaveFromManager()
+    {
+        StartCoroutine(StartNextWave());
     }
 }

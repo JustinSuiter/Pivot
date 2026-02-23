@@ -72,4 +72,35 @@ public class HitFeedback : MonoBehaviour
 
         _activeCameraTransform.localPosition = _cameraOriginalPos;
     }
+
+    public void TriggerSyncBurst()
+    {
+        StartCoroutine(BurstEffect());
+    }
+
+    IEnumerator BurstEffect()
+    {
+        Time.timeScale = 0f;
+        yield return new WaitForSecondsRealtime(0.08f);
+        Time.timeScale = 1f;
+
+        if (_activeCameraTransform != null)
+        {
+            float elapsed = 0f;
+            float duration = 0.3f;
+            float magnitude = 0.15f;
+
+            while (elapsed < duration)
+            {
+                float x = Random.Range(-1f, 1f) * magnitude;
+                float y = Random.Range(-1f, 1f) * magnitude;
+                _activeCameraTransform.localPosition = _cameraOriginalPos + new Vector3(x, y, 0f);
+                elapsed += Time.unscaledDeltaTime;
+                magnitude *= 0.95f;
+                yield return null;
+            }
+
+            _activeCameraTransform.localPosition = _cameraOriginalPos;
+        }
+    }
 }
