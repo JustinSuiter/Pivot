@@ -150,11 +150,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyRusher
   maxHealth: 100
-  damage: 10
+  damage: 8
   attackRange: 1.8
-  attackCooldown: 1.2
-  player: {fileID: 0}
+  attackCooldown: 1.5
+  player: {fileID: 7607787753046883689, guid: 77eda5cc8ace06543909e8fcd65029f6, type: 3}
   approachSpeed: 4
   lungeSpeed: 14
   lungeRange: 6
-  lungePause: 0.4
+  lungePause: 0.6

@@ -17,6 +17,11 @@ public class DualCharacterController : MonoBehaviour
     public Camera frontCamera;
     public Camera backCamera;
 
+    [Header("Flip Feedback")]
+    public float flipFOVPunch = 95f;
+    public float normalFOV = 80f;
+    public float fovReturnSpeed = 8f;
+
     [Header("State")]
     public bool isFacingFront = true;
 
@@ -24,6 +29,8 @@ public class DualCharacterController : MonoBehaviour
     private float _verticalVelocity;
     private float _flipTimer;
     private float _cameraPitch;
+    private float _currentFOV;
+    private bool _isReturningFOV = false;
 
     void Start()
     {
@@ -34,6 +41,8 @@ public class DualCharacterController : MonoBehaviour
         isFacingFront = true;
         frontCamera.enabled = true;
         backCamera.enabled = false;
+
+        _currentFOV = normalFOV;
     }
 
     void Update()
@@ -41,6 +50,7 @@ public class DualCharacterController : MonoBehaviour
         HandleMovement();
         HandleLook();
         HandleFlip();
+        HandleFOVReturn();
     }
 
     void HandleMovement()
@@ -49,7 +59,8 @@ public class DualCharacterController : MonoBehaviour
         float v = Input.GetAxis("Vertical");
 
         float facingMultiplier = isFacingFront ? 1f : -1f;
-        Vector3 move = transform.forward * v * facingMultiplier + transform.right * h * facingMultiplier;
+        Vector3 move = transform.forward * v * facingMultiplier
+                     + transform.right * h * facingMultiplier;
         move.y = 0f;
 
         if (_cc.isGrounded)
@@ -85,6 +96,33 @@ public class DualCharacterController : MonoBehaviour
             frontCamera.enabled = isFacingFront;
             backCamera.enabled = !isFacingFront;
             _flipTimer = flipCooldown;
+            AudioManager.Instance?.PlayFlip();
+
+            TriggerFlipFeedback();
+            UpgradeManager.Instance?.OnFlip();
+        }
+    }
+
+    void TriggerFlipFeedback()
+    {
+        _currentFOV = flipFOVPunch;
+        frontCamera.fieldOfView = _currentFOV;
+        backCamera.fieldOfView = _currentFOV;
+        _isReturningFOV = true;
+    }
+
+    void HandleFOVReturn()
+    {
+        if (!_isReturningFOV) return;
+
+        _currentFOV = Mathf.Lerp(_currentFOV, normalFOV, Time.deltaTime * fovReturnSpeed);
+        frontCamera.fieldOfView = _currentFOV;
+        backCamera.fieldOfView = _currentFOV;
+
+        if (Mathf.Abs(_currentFOV - normalFOV) < 0.1f)
+        {
+            _currentFOV = normalFOV;
+            _isReturningFOV = false;
         }
     }
 

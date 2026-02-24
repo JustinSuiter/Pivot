@@ -39,9 +39,9 @@ public class EnemyBase : MonoBehaviour
     protected virtual void Update()
     {
         if (_isDead || player == null) return;
+        if (GameManager.Instance != null && GameManager.Instance.isGameOver) return;
 
         _attackTimer -= Time.deltaTime;
-
         Pursue();
         TryAttack();
     }
@@ -100,9 +100,27 @@ public class EnemyBase : MonoBehaviour
     protected virtual void Die()
     {
         _isDead = true;
+        AudioManager.Instance?.PlayEnemyDeath();
         if (_agent != null) _agent.enabled = false;
         WaveManager.Instance?.HandleEnemyDeath();
         GameManager.Instance?.AddScore(100);
+        SyncMeter.Instance?.AddSyncOnKill();
+        GameObject deathFX = Resources.Load<GameObject>("FX_EnemyDeath");
+        if (deathFX != null)
+            Instantiate(deathFX, transform.position + Vector3.up, Quaternion.identity);
         Destroy(gameObject, 0.1f);
     }
+
+    public void ApplyStagger(float duration)
+    {
+        StartCoroutine(StaggerCoroutine(duration));
+    }
+
+    IEnumerator StaggerCoroutine(float duration)
+    {
+        if (_agent != null) _agent.isStopped = true;
+        yield return new WaitForSeconds(duration);
+        if (_agent != null && !_isDead) _agent.isStopped = false;
+    }
+    
 }
