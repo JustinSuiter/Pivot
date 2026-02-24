@@ -44,6 +44,7 @@ public class WaveManager : MonoBehaviour
 
         Debug.Log("Wave " + (currentWaveIndex + 1) + " starting in " + data.waveStartDelay + "s");
         yield return new WaitForSeconds(data.waveStartDelay);
+        AudioManager.Instance?.PlayWaveStart();
 
         waveInProgress = true;
         GameManager.Instance?.OnWaveStart(currentWaveIndex + 1);

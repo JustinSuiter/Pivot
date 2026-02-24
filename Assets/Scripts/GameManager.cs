@@ -49,18 +49,33 @@ public class GameManager : MonoBehaviour
     {
         if (isGameOver) return;
 
-        float actualDamage = ShieldController.Instance != null
+        float afterShield = ShieldController.Instance != null
             ? ShieldController.Instance.ProcessIncomingDamage(amount)
             : amount;
 
+        float actualDamage = UpgradeManager.Instance != null
+            ? UpgradeManager.Instance.ProcessDamageReduction(afterShield)
+            : afterShield;
+
         playerHP -= actualDamage;
+        playerHP = Mathf.Max(0f, playerHP);
+
         if (actualDamage >= 10f)
             DamageVignette.Instance?.Flash();
-        playerHP = Mathf.Max(0f, playerHP);
+
         HUDManager.Instance?.UpdateHP(playerHP, maxHP);
 
         if (playerHP <= 0f)
+        {
+            if (UpgradeManager.Instance != null && UpgradeManager.Instance.TryLastStand())
+            {
+                playerHP = 1f;
+                HUDManager.Instance?.UpdateHP(playerHP, maxHP);
+                DamageVignette.Instance?.FlashBig();
+                return;
+            }
             TriggerGameOver();
+        }
     }
 
     public void OnWaveStart(int waveNumber)
@@ -76,6 +91,7 @@ public class GameManager : MonoBehaviour
 
     void TriggerGameOver()
     {
+        AudioManager.Instance?.PlayDeath();
         if (isGameOver) return;
         isGameOver = true;
 
@@ -112,5 +128,12 @@ public class GameManager : MonoBehaviour
     public void QuitGame()
     {
         Application.Quit();
+    }
+
+    public void SpendScore(int amount)
+    {
+        score -= amount;
+        score = Mathf.Max(0, score);
+        HUDManager.Instance?.UpdateScore(score);
     }
 }

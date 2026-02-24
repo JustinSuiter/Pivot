@@ -21,8 +21,6 @@ public class DualCharacterController : MonoBehaviour
     public float flipFOVPunch = 95f;
     public float normalFOV = 80f;
     public float fovReturnSpeed = 8f;
-    private float _currentFOV;
-    private bool _isReturningFOV = false;
 
     [Header("State")]
     public bool isFacingFront = true;
@@ -31,6 +29,8 @@ public class DualCharacterController : MonoBehaviour
     private float _verticalVelocity;
     private float _flipTimer;
     private float _cameraPitch;
+    private float _currentFOV;
+    private bool _isReturningFOV = false;
 
     void Start()
     {
@@ -41,6 +41,7 @@ public class DualCharacterController : MonoBehaviour
         isFacingFront = true;
         frontCamera.enabled = true;
         backCamera.enabled = false;
+
         _currentFOV = normalFOV;
     }
 
@@ -58,7 +59,8 @@ public class DualCharacterController : MonoBehaviour
         float v = Input.GetAxis("Vertical");
 
         float facingMultiplier = isFacingFront ? 1f : -1f;
-        Vector3 move = transform.forward * v * facingMultiplier + transform.right * h * facingMultiplier;
+        Vector3 move = transform.forward * v * facingMultiplier
+                     + transform.right * h * facingMultiplier;
         move.y = 0f;
 
         if (_cc.isGrounded)
@@ -94,19 +96,20 @@ public class DualCharacterController : MonoBehaviour
             frontCamera.enabled = isFacingFront;
             backCamera.enabled = !isFacingFront;
             _flipTimer = flipCooldown;
-        }
+            AudioManager.Instance?.PlayFlip();
 
-        if (Input.GetKeyDown(KeyCode.Space) && _flipTimer <= 0f)
-        {
-            isFacingFront = !isFacingFront;
-            frontCamera.enabled = isFacingFront;
-            backCamera.enabled = !isFacingFront;
-            _flipTimer = flipCooldown;
             TriggerFlipFeedback();
+            UpgradeManager.Instance?.OnFlip();
         }
     }
 
-    public Camera GetActiveCamera() => isFacingFront ? frontCamera : backCamera;
+    void TriggerFlipFeedback()
+    {
+        _currentFOV = flipFOVPunch;
+        frontCamera.fieldOfView = _currentFOV;
+        backCamera.fieldOfView = _currentFOV;
+        _isReturningFOV = true;
+    }
 
     void HandleFOVReturn()
     {
@@ -123,12 +126,5 @@ public class DualCharacterController : MonoBehaviour
         }
     }
 
-    void TriggerFlipFeedback()
-    {
-        _currentFOV = flipFOVPunch;
-        frontCamera.fieldOfView = _currentFOV;
-        backCamera.fieldOfView = _currentFOV;
-        _isReturningFOV = true;
-    }
-
+    public Camera GetActiveCamera() => isFacingFront ? frontCamera : backCamera;
 }

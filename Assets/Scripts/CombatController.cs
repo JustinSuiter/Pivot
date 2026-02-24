@@ -24,9 +24,13 @@ public class CombatController : MonoBehaviour
     private float _swingTimer;
     private bool _isSinging;
 
+    [HideInInspector] public float baseDamage;
+    public bool enableStagger = false;
+
     void Start()
     {
         _hitFeedback = HitFeedback.Instance;
+        baseDamage = damage;
     }
     void Update()
     {
@@ -41,7 +45,7 @@ public class CombatController : MonoBehaviour
     IEnumerator PerformSwing()
     {
         _isSinging = true;
-        _hitFeedback?.OnSwing();
+        AudioManager.Instance?.PlaySwing();
 
         _swingTimer = swingCooldown;
 
@@ -88,6 +92,12 @@ public class CombatController : MonoBehaviour
             if (enemy != null)
             {
                 enemy.TakeDamage(damage * damageMultiplier);
+                AudioManager.Instance?.PlayHit();
+                AudioManager.Instance?.PlayEnemyHit();
+                UpgradeManager.Instance?.OnHitLanded();
+
+                if (enableStagger)
+                    enemy.ApplyStagger(0.5f);
                 SyncMeter.Instance?.ArmFromHit();
                 HitFeedback.Instance?.SetActiveCamera(dualController.GetActiveCamera().transform);
                 HitFeedback.Instance?.OnHit();

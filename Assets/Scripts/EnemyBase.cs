@@ -100,6 +100,7 @@ public class EnemyBase : MonoBehaviour
     protected virtual void Die()
     {
         _isDead = true;
+        AudioManager.Instance?.PlayEnemyDeath();
         if (_agent != null) _agent.enabled = false;
         WaveManager.Instance?.HandleEnemyDeath();
         GameManager.Instance?.AddScore(100);
@@ -110,5 +111,16 @@ public class EnemyBase : MonoBehaviour
         Destroy(gameObject, 0.1f);
     }
 
+    public void ApplyStagger(float duration)
+    {
+        StartCoroutine(StaggerCoroutine(duration));
+    }
+
+    IEnumerator StaggerCoroutine(float duration)
+    {
+        if (_agent != null) _agent.isStopped = true;
+        yield return new WaitForSeconds(duration);
+        if (_agent != null && !_isDead) _agent.isStopped = false;
+    }
     
 }

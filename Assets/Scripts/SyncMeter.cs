@@ -94,6 +94,7 @@ public class SyncMeter : MonoBehaviour
 
         Debug.Log("SYNC BURST ACTIVATED");
         HitFeedback.Instance?.TriggerSyncBurst();
+        AudioManager.Instance?.PlaySyncBurst();
 
         Collider[] hits = Physics.OverlapSphere(
             dualController.transform.position,

@@ -4,6 +4,7 @@ using System.Collections;
 public class ShieldController : MonoBehaviour
 {
     public static ShieldController Instance;
+    [HideInInspector] public float backWeaponDamage = 5f;
 
     [Header("References")]
     public DualCharacterController dualController;
@@ -77,9 +78,11 @@ public class ShieldController : MonoBehaviour
             return rawDamage;
 
         float damageMultiplier = StaminaSystem.Instance.UseBlockStamina();
+        AudioManager.Instance?.PlayBlock();
 
         if (_inParryWindow)
         {
+            AudioManager.Instance?.PlayPerfectParry();
             SyncMeter.Instance?.ArmFromBlock(isPerfectParry: _inParryWindow);
             HitFeedback.Instance?.OnHit();
             Debug.Log("Perfect Parry!");

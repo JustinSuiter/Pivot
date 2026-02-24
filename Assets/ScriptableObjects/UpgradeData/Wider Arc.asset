@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 52b99e6f2878c82498facc16d9439411, type: 3}
   m_Name: Wider Arc
   m_EditorClassIdentifier: Assembly-CSharp::UpgradeData
-  upgradeName: 
-  description: 
+  upgradeName: Wider Arc
+  description: Back weapon sweeps much wider
   icon: {fileID: 0}
   upgradeType: 0
-  value: 0
+  value: 60

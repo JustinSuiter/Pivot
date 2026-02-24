@@ -33,6 +33,7 @@ public class WaveClearManager : MonoBehaviour
 
     IEnumerator WaveClearSequence(int waveNumber, int scoreGained)
     {
+        AudioManager.Instance?.PlayWaveClear();
         Time.timeScale = 0.05f;
         yield return new WaitForSecondsRealtime(0.3f);
         Time.timeScale = 1f;
@@ -74,9 +75,27 @@ public class WaveClearManager : MonoBehaviour
         marketButton.SetActive(false);
         countdownText.gameObject.SetActive(true);
 
+        UpgradePickerUI.Instance?.Show();
+    }
+
+    public void AfterUpgradePicked()
+    {
+        // Called by UpgradePickerUI after selection
+        if (_marketPending)
+        {
+            _marketPending = false;
+            MarketUI.Instance?.Show();
+        }
+        else
+        {
+            ResumeGame();
+        }
+    }
+    
+        public void ResumeGame()
+    {
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
-
         WaveManager.Instance?.StartNextWaveFromManager();
     }
 }
