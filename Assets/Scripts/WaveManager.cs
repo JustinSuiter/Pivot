@@ -5,7 +5,8 @@ using System.Collections.Generic;
 public class WaveManager : MonoBehaviour
 {
     public static WaveManager Instance;
-
+    public Transform playerTransform;
+    
     [Header("Wave Data")]
     public List<WaveData> waves;
     public WaveData escalationWave;
@@ -37,6 +38,8 @@ public class WaveManager : MonoBehaviour
     IEnumerator StartNextWave()
     {
         waveInProgress = false;
+        FoodSpawner.Instance?.SetWaveActive(true);
+        AudioManager.Instance?.PlayWaveStart();
 
         WaveData data = currentWaveIndex < waves.Count
             ? waves[currentWaveIndex]
@@ -60,6 +63,7 @@ public class WaveManager : MonoBehaviour
         }
 
         yield return new WaitUntil(() => enemiesAlive <= 0);
+        FoodSpawner.Instance?.SetWaveActive(false);
 
         int scoreGained = 500;
         GameManager.Instance?.OnWaveCleared(currentWaveIndex + 1);
@@ -74,6 +78,9 @@ public class WaveManager : MonoBehaviour
 
         Transform spawnPoint = _spawnPoints[Random.Range(0, _spawnPoints.Length)];
         GameObject enemy = Instantiate(prefab, spawnPoint.position, Quaternion.identity);
+        EnemyBase eb = enemy.GetComponent<EnemyBase>();
+        if (eb != null)
+            eb.player = playerTransform;
 
         enemiesAlive++;
     }

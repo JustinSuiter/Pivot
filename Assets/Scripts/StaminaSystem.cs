@@ -10,7 +10,7 @@ public class StaminaSystem : MonoBehaviour
     public float regenRate = 15f;
     public float regenDelay = 1.5f;
     public float swingCost = 20f;
-    public float blockCost = 8f;
+    public float blockCost = 3f;
     public float exhaustedDamageMultiplier = 0.5f;
     public float exhaustedBlockMultiplier = 0.3f;
 

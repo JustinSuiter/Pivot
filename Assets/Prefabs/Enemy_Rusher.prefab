@@ -154,7 +154,7 @@ MonoBehaviour:
   attackRange: 1.8
   attackCooldown: 1.5
   player: {fileID: 7607787753046883689, guid: 77eda5cc8ace06543909e8fcd65029f6, type: 3}
-  approachSpeed: 4
-  lungeSpeed: 14
+  approachSpeed: 5
+  lungeSpeed: 16
   lungeRange: 6
-  lungePause: 0.6
+  lungePause: 0.35

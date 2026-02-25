@@ -136,4 +136,12 @@ public class GameManager : MonoBehaviour
         score = Mathf.Max(0, score);
         HUDManager.Instance?.UpdateScore(score);
     }
+
+    public void HealPlayer(float amount)
+    {
+        playerHP += amount;
+        playerHP = Mathf.Min(playerHP, maxHP);
+        HUDManager.Instance?.UpdateHP(playerHP, maxHP);
+        Debug.Log("Healed: " + amount + " | HP: " + playerHP);
+    }
 }

@@ -22,6 +22,9 @@ public class EnemyBase : MonoBehaviour
 
     protected virtual void Start()
     {
+        StartCoroutine(DebugPlayerPos());
+        Debug.Log("Found player: " + player.name + " ID: " + player.GetInstanceID());
+        Debug.Log(gameObject.name + " player ref: " + (player == null ? "NULL" : player.name + " at " + player.position));
         _currentHealth = maxHealth;
         _agent = GetComponent<NavMeshAgent>();
         _renderer = GetComponentInChildren<Renderer>();
@@ -31,15 +34,17 @@ public class EnemyBase : MonoBehaviour
 
         if (player == null)
         {
-            GameObject p = GameObject.FindWithTag("Player");
-            if (p != null) player = p.transform;
-        }
+            CharacterController cc = FindFirstObjectByType<CharacterController>();
+            if (cc != null) player = cc.transform;
+}
     }
 
     protected virtual void Update()
     {
         if (_isDead || player == null) return;
         if (GameManager.Instance != null && GameManager.Instance.isGameOver) return;
+
+        Debug.Log("Player world pos: " + player.position + " | My pos: " + transform.position + " | Same object? " + (player.gameObject == this.gameObject));
 
         _attackTimer -= Time.deltaTime;
         Pursue();
@@ -49,7 +54,10 @@ public class EnemyBase : MonoBehaviour
     protected virtual void Pursue()
     {
         if (_agent != null && _agent.isOnNavMesh)
+        {
             _agent.SetDestination(player.position);
+            Debug.Log("Setting destination to: " + player.position + " agent pos: " + transform.position);
+        }
     }
 
     protected virtual void TryAttack()
@@ -121,6 +129,16 @@ public class EnemyBase : MonoBehaviour
         if (_agent != null) _agent.isStopped = true;
         yield return new WaitForSeconds(duration);
         if (_agent != null && !_isDead) _agent.isStopped = false;
+    }
+
+    IEnumerator DebugPlayerPos()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(1f);
+            if (player != null)
+                Debug.Log("PLAYER POS CHECK: " + player.position + " | instance ID: " + player.GetInstanceID());
+        }
     }
     
 }

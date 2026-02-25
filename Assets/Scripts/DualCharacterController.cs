@@ -32,8 +32,14 @@ public class DualCharacterController : MonoBehaviour
     private float _currentFOV;
     private bool _isReturningFOV = false;
 
+    [HideInInspector] public bool inputLocked = false;
+
     void Start()
     {
+        float savedFOV = PlayerPrefs.GetFloat("FOV", 80f);
+        normalFOV = savedFOV;
+        frontCamera.fieldOfView = savedFOV;
+        backCamera.fieldOfView = savedFOV;
         _cc = GetComponent<CharacterController>();
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
@@ -47,8 +53,11 @@ public class DualCharacterController : MonoBehaviour
 
     void Update()
     {
-        HandleMovement();
-        HandleLook();
+        if (!inputLocked)
+        {
+            HandleMovement();
+            HandleLook();
+        }
         HandleFlip();
         HandleFOVReturn();
     }
