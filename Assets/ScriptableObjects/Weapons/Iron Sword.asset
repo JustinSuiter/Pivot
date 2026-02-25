@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9234c7ed72c7601489ad74ccc903f735, type: 3}
+  m_Name: Iron Sword
+  m_EditorClassIdentifier: Assembly-CSharp::WeaponData
+  weaponName: Iron Sword
+  description: Fast and Reliable
+  icon: {fileID: 0}
+  cost: 0
+  damage: 25
+  swingCooldown: 0.4
+  hitRadius: 1.2
+  hitRange: 1.5
+  swingAngle: 60
+  isFrontWeapon: 1
+  weaponMeshPrefab: {fileID: 4616735262727976565, guid: 6d220815ce3d55b46b142ebd17331ac0, type: 3}
