@@ -6,7 +6,7 @@ public class WaveManager : MonoBehaviour
 {
     public static WaveManager Instance;
     public Transform playerTransform;
-
+    
     [Header("Wave Data")]
     public List<WaveData> waves;
     public WaveData escalationWave;
@@ -38,6 +38,8 @@ public class WaveManager : MonoBehaviour
     IEnumerator StartNextWave()
     {
         waveInProgress = false;
+        FoodSpawner.Instance?.SetWaveActive(true);
+        AudioManager.Instance?.PlayWaveStart();
 
         WaveData data = currentWaveIndex < waves.Count
             ? waves[currentWaveIndex]
@@ -61,6 +63,7 @@ public class WaveManager : MonoBehaviour
         }
 
         yield return new WaitUntil(() => enemiesAlive <= 0);
+        FoodSpawner.Instance?.SetWaveActive(false);
 
         int scoreGained = 500;
         GameManager.Instance?.OnWaveCleared(currentWaveIndex + 1);

@@ -26,7 +26,7 @@ RenderSettings:
   m_AmbientIntensity: 1
   m_AmbientMode: 0
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
-  m_SkyboxMaterial: {fileID: 10304, guid: 0000000000000000f000000000000000, type: 0}
+  m_SkyboxMaterial: {fileID: 2100000, guid: 7416536dbe0334cfd888dd1beb75a9fb, type: 2}
   m_HaloStrength: 0.5
   m_FlareStrength: 1
   m_FlareFadeSpeed: 3
@@ -234,7 +234,7 @@ Transform:
   m_GameObject: {fileID: 187238050}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 1.1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -609,6 +609,11 @@ Transform:
   m_Children: []
   m_Father: {fileID: 187238051}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &970504255 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5746795786866396533, guid: 4b2929953b94db94eab4b8986b482f3b, type: 3}
+  m_PrefabInstance: {fileID: 1880255020941816222}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &1105924530 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4765842607951693136, guid: 93ea0dde4513bab4ab160609cccbbbcc, type: 3}
@@ -738,6 +743,59 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
+--- !u!1 &1608067118
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1608067119}
+  - component: {fileID: 1608067120}
+  m_Layer: 0
+  m_Name: FoodSpawner
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1608067119
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1608067118}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 29.4167, y: -25.22417, z: 15.85656}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 970504255}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1608067120
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1608067118}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0ab20253e2337374490bfd94a9e8e218, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FoodSpawner
+  foodPrefabs:
+  - {fileID: 1758637197869414423, guid: e30f8b145a3300e43964917be0d8cb9c, type: 3}
+  - {fileID: 2544559765986631851, guid: a45e8022baf1cba408ae1bd5993d4af6, type: 3}
+  - {fileID: 1924797363340585641, guid: 5e657296040b9914a8eadc1ffb39936c, type: 3}
+  healAmount: 20
+  minSpawnInterval: 5
+  maxSpawnInterval: 10
+  maxFoodOnArena: 10
+  spawnPointParent: {fileID: 187238051}
 --- !u!1 &1636961783
 GameObject:
   m_ObjectHideFlags: 0
@@ -6321,7 +6379,10 @@ PrefabInstance:
       objectReference: {fileID: 76993156}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 5746795786866396533, guid: 4b2929953b94db94eab4b8986b482f3b, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1608067119}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4b2929953b94db94eab4b8986b482f3b, type: 3}
 --- !u!1001 &3493749803496148018
