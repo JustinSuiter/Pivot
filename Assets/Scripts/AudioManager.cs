@@ -5,7 +5,7 @@ public class AudioManager : MonoBehaviour
     public static AudioManager Instance;
 
     [Header("Music")]
-    public AudioClip arenaMusic;
+    public AudioClip[] musicTracks;
     public float musicVolume = 0.4f;
 
     [Header("Player SFX")]
@@ -30,10 +30,12 @@ public class AudioManager : MonoBehaviour
 
     private AudioSource _musicSource;
     private AudioSource _sfxSource;
+    private int _lastTrackIndex = -1;
 
     void Awake()
     {
         Instance = this;
+
         AudioSource[] sources = GetComponents<AudioSource>();
         if (sources.Length >= 2)
         {
@@ -46,18 +48,55 @@ public class AudioManager : MonoBehaviour
             _sfxSource = gameObject.AddComponent<AudioSource>();
         }
 
-        _musicSource.loop = true;
-        _musicSource.volume = musicVolume;
+        _musicSource.loop = false;
         _musicSource.playOnAwake = false;
+
+        _musicSource.volume = PlayerPrefs.GetFloat("MusicVolume", 0.4f);
+        _sfxSource.volume = PlayerPrefs.GetFloat("SFXVolume", 1f);
     }
 
     void Start()
     {
-        if (arenaMusic != null)
+        PlayRandomTrack();
+    }
+
+    void Update()
+    {
+        if (!_musicSource.isPlaying)
+            PlayRandomTrack();
+    }
+
+    void PlayRandomTrack()
+    {
+        if (musicTracks == null || musicTracks.Length == 0) return;
+
+        int index;
+        do
         {
-            _musicSource.clip = arenaMusic;
-            _musicSource.Play();
+            index = Random.Range(0, musicTracks.Length);
         }
+        while (index == _lastTrackIndex && musicTracks.Length > 1);
+
+        _lastTrackIndex = index;
+        _musicSource.clip = musicTracks[index];
+        _musicSource.Play();
+    }
+
+    public void SetMusicVolume(float volume)
+    {
+        musicVolume = volume;
+        if (_musicSource != null)
+            _musicSource.volume = volume;
+        PlayerPrefs.SetFloat("MusicVolume", volume);
+        PlayerPrefs.Save();
+    }
+
+    public void SetSFXVolume(float volume)
+    {
+        if (_sfxSource != null)
+            _sfxSource.volume = volume;
+        PlayerPrefs.SetFloat("SFXVolume", volume);
+        PlayerPrefs.Save();
     }
 
     public void Play(AudioClip clip, float volume = 1f)

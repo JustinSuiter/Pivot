@@ -12,6 +12,7 @@ public class CombatController : MonoBehaviour
     public float damage = 25f;
     [HideInInspector] public float baseDamage;
     public float swingCooldown = 0.35f;
+    public float backSwingCooldown = 0.7f;
     public float hitRadius = 1.2f;
     public float hitRange = 1.5f;
     public float swingAngle = 60f;
@@ -20,11 +21,10 @@ public class CombatController : MonoBehaviour
 
     [Header("Front Slash Settings")]
     public float slashDuration = 0.18f;
-    public float slashSwipeDistance = 0.5f;
     public float slashPeakScale = 1.15f;
 
     [Header("Back Bash Settings")]
-    public float bashDuration = 0.15f;
+    public float bashDuration = 0.2f;
     public float bashForwardDistance = 0.4f;
     public float bashPeakScale = 1.1f;
 
@@ -65,26 +65,32 @@ public class CombatController : MonoBehaviour
         if (Input.GetMouseButtonDown(0) && _swingTimer <= 0f && !_isSwinging)
         {
             if (dualController.isFacingFront)
+            {
+                _swingTimer = swingCooldown;
                 StartCoroutine(PerformSlash());
+            }
             else
+            {
+                _swingTimer = backSwingCooldown;
                 StartCoroutine(PerformBash());
+            }
         }
     }
 
     IEnumerator PerformSlash()
     {
         _isSwinging = true;
-        _swingTimer = swingCooldown;
-
         AudioManager.Instance?.PlaySwing();
 
-        Vector3 startPos = _frontOriginalPos + new Vector3(0.3f, 0f, 0f);
-        Quaternion startRot = _frontOriginalRot * Quaternion.Euler(0f, 0f, -40f);
+        Vector3 startPos = _frontOriginalPos + new Vector3(0.4f, 0.15f, -0.1f);
+        Quaternion startRot = _frontOriginalRot * Quaternion.Euler(-20f, -15f, -50f);
         Vector3 startScale = _frontOriginalScale;
 
-        Vector3 endPos = _frontOriginalPos + new Vector3(-slashSwipeDistance, 0f, 0f);
-        Quaternion endRot = _frontOriginalRot * Quaternion.Euler(0f, 0f, 40f);
+        Vector3 endPos = _frontOriginalPos + new Vector3(-0.4f, -0.15f, 0.1f);
+        Quaternion endRot = _frontOriginalRot * Quaternion.Euler(20f, 15f, 50f);
         Vector3 peakScale = _frontOriginalScale * slashPeakScale;
+
+        Vector3 midPos = _frontOriginalPos + new Vector3(0f, 0f, 0.2f);
 
         weaponPivot_Front.localPosition = startPos;
         weaponPivot_Front.localRotation = startRot;
@@ -98,7 +104,12 @@ public class CombatController : MonoBehaviour
             float t = elapsed / slashDuration;
             float smoothT = Mathf.SmoothStep(0f, 1f, t);
 
-            weaponPivot_Front.localPosition = Vector3.Lerp(startPos, endPos, smoothT);
+            // Arc through midpoint
+            Vector3 pos = t < 0.5f
+                ? Vector3.Lerp(startPos, midPos, t * 2f)
+                : Vector3.Lerp(midPos, endPos, (t - 0.5f) * 2f);
+
+            weaponPivot_Front.localPosition = pos;
             weaponPivot_Front.localRotation = Quaternion.Lerp(startRot, endRot, smoothT);
 
             float scaleT = Mathf.Sin(t * Mathf.PI);
@@ -126,8 +137,6 @@ public class CombatController : MonoBehaviour
     IEnumerator PerformBash()
     {
         _isSwinging = true;
-        _swingTimer = swingCooldown;
-
         AudioManager.Instance?.PlaySwing();
 
         Vector3 startPos = _backOriginalPos;

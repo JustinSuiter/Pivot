@@ -205,6 +205,7 @@ GameObject:
   - component: {fileID: 1348922264266941660}
   - component: {fileID: 4590160994986332182}
   - component: {fileID: 2361846483082358748}
+  - component: {fileID: 8792813512221181766}
   m_Layer: 0
   m_Name: AudioManager
   m_TagString: Untagged
@@ -421,6 +422,34 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &8792813512221181766
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6164767318821029781}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b3711927c794dd4c94405d8cb30e29e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AudioManager
+  arenaMusic: {fileID: 0}
+  musicVolume: 0.4
+  swingSound: {fileID: 8300000, guid: b3d52414ea6c50143aa08d06834aa54e, type: 3}
+  hitSound: {fileID: 8300000, guid: 003a7639a53a8d146b6a5cfd23e16786, type: 3}
+  blockSound: {fileID: 0}
+  perfectParrySound: {fileID: 0}
+  syncBurstSound: {fileID: 0}
+  flipSound: {fileID: 0}
+  deathSound: {fileID: 0}
+  enemyHitSound: {fileID: 0}
+  enemyDeathSound: {fileID: 0}
+  rushersGrowl: {fileID: 0}
+  waveStartSound: {fileID: 0}
+  waveClearSound: {fileID: 0}
+  upgradeSelectSound: {fileID: 0}
+  marketBuySound: {fileID: 0}
 --- !u!1 &7047642514712763354
 GameObject:
   m_ObjectHideFlags: 0
@@ -489,7 +518,6 @@ MonoBehaviour:
   - {fileID: 0}
   closeButton: {fileID: 0}
   allWeapons:
-  - {fileID: 11400000, guid: e53f78f1d1d79f14a98c821e7d3277af, type: 2}
   - {fileID: 11400000, guid: 0b046f64a546c504b85f0f902f21dfb9, type: 2}
   - {fileID: 11400000, guid: 8bcd128647a193940b7cbf66c17f7c30, type: 2}
   - {fileID: 11400000, guid: ea00cb06fed388c4890368e264efd451, type: 2}

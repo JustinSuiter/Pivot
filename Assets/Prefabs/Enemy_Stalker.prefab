@@ -154,8 +154,8 @@ MonoBehaviour:
   attackRange: 2.2
   attackCooldown: 1.8
   player: {fileID: 7607787753046883689, guid: 77eda5cc8ace06543909e8fcd65029f6, type: 3}
-  strafeSpeed: 2.5
-  strikeSpeed: 7
-  keepDistance: 6
+  strafeSpeed: 3.5
+  strikeSpeed: 10
+  keepDistance: 5
   strafeTime: 5
   strafeRadius: 7

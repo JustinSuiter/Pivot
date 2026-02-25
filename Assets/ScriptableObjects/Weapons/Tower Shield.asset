@@ -22,4 +22,4 @@ MonoBehaviour:
   hitRange: 1
   swingAngle: 20
   isFrontWeapon: 0
-  weaponMeshPrefab: {fileID: 0}
+  weaponMeshPrefab: {fileID: 3731345506958279002, guid: ac44dfb7083d9c34ebada415e34fda34, type: 3}

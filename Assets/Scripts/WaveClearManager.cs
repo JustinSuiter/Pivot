@@ -47,6 +47,9 @@ public class WaveClearManager : MonoBehaviour
             marketButton.SetActive(true);
             countdownText.gameObject.SetActive(false);
 
+            DualCharacterController dc = FindFirstObjectByType<DualCharacterController>();
+                if (dc != null) dc.inputLocked = true;
+
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
 
@@ -71,20 +74,25 @@ public class WaveClearManager : MonoBehaviour
 
     public void HideWaveClear()
     {
+        DualCharacterController dc = FindFirstObjectByType<DualCharacterController>();
+            if (dc != null) dc.inputLocked = false;
+        Debug.Log("HideWaveClear called");
         waveClearPanel.SetActive(false);
         marketButton.SetActive(false);
         countdownText.gameObject.SetActive(true);
-
+        Debug.Log("UpgradePickerUI instance: " + (UpgradePickerUI.Instance == null ? "NULL" : "Found"));
         UpgradePickerUI.Instance?.Show();
     }
 
     public void AfterUpgradePicked()
     {
-        // Called by UpgradePickerUI after selection
+        Debug.Log("AfterUpgradePicked called. MarketPending: " + _marketPending);
         if (_marketPending)
         {
             _marketPending = false;
+            Debug.Log("MarketUI instance: " + (MarketUI.Instance == null ? "NULL" : "Found"));
             MarketUI.Instance?.Show();
+            
         }
         else
         {
@@ -92,8 +100,10 @@ public class WaveClearManager : MonoBehaviour
         }
     }
     
-        public void ResumeGame()
+    public void ResumeGame()
     {
+        DualCharacterController dc = FindFirstObjectByType<DualCharacterController>();
+        if (dc != null) dc.inputLocked = false;
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
         WaveManager.Instance?.StartNextWaveFromManager();

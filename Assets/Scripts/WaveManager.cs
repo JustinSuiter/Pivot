@@ -5,6 +5,7 @@ using System.Collections.Generic;
 public class WaveManager : MonoBehaviour
 {
     public static WaveManager Instance;
+    public Transform playerTransform;
 
     [Header("Wave Data")]
     public List<WaveData> waves;
@@ -74,6 +75,9 @@ public class WaveManager : MonoBehaviour
 
         Transform spawnPoint = _spawnPoints[Random.Range(0, _spawnPoints.Length)];
         GameObject enemy = Instantiate(prefab, spawnPoint.position, Quaternion.identity);
+        EnemyBase eb = enemy.GetComponent<EnemyBase>();
+        if (eb != null)
+            eb.player = playerTransform;
 
         enemiesAlive++;
     }
