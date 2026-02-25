@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9234c7ed72c7601489ad74ccc903f735, type: 3}
+  m_Name: Iron Shield
+  m_EditorClassIdentifier: Assembly-CSharp::WeaponData
+  weaponName: Iron Sword
+  description: Solid Protection
+  icon: {fileID: 0}
+  cost: 0
+  damage: 5
+  swingCooldown: 0.5
+  hitRadius: 1
+  hitRange: 1
+  swingAngle: 30
+  isFrontWeapon: 0
+  weaponMeshPrefab: {fileID: 6893291806589380786, guid: 562b61c29fe4ba34cae3743344012748, type: 3}
